@@ -37,7 +37,6 @@ frequencyMap.controller("MapController", [ '$scope', '$http', function($scope, $
     },
 
     refresh: function () {
-      console.log ('bang');
       $http({
         method: "GET",
         url: "/frequency-server/average-intervals",
