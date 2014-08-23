@@ -7,6 +7,13 @@ frequencyMap.controller("MapController", [ '$scope', '$http', function($scope, $
     "Westbound" : "#042a10"
   };
 
+  function ratioFromInterval (interval) {
+    interval = Math.min(interval, 20);
+    // reverse it, because we really care about frequency, the
+    // complement of interval length
+    return 1 - (interval / 20);
+  };
+  
   angular.extend($scope, {
     
     
@@ -21,7 +28,7 @@ frequencyMap.controller("MapController", [ '$scope', '$http', function($scope, $
     },
 
     legend: {
-      position: 'topright',
+      position: 'bottomright',
       colors: _.values(directionColors),
       labels: _.keys(directionColors)
     },
@@ -37,6 +44,7 @@ frequencyMap.controller("MapController", [ '$scope', '$http', function($scope, $
     },
 
     refresh: function () {
+      $scope.geojson = [];
       $http({
         method: "GET",
         url: "/frequency-server/average-intervals",
@@ -48,14 +56,19 @@ frequencyMap.controller("MapController", [ '$scope', '$http', function($scope, $
         $scope.geojson = {
           data: response,
           pointToLayer: function(feature, latlng){
-            return L.circleMarker(latlng, {
-              radius: 5,
+            var m = L.circleMarker(latlng, {
+              radius: ratioFromInterval(feature.properties.interval) * 10,
               fillColor: directionColors[feature.properties.direction],
               color: '#000',
               weight: 0.5,
               opacity: 1,
-              fillOpacity: 0.5
+              fillOpacity: 0.25
             });
+            m.bindPopup(feature.properties.route + ', ' +
+                        feature.properties.stop + '(' +
+                        feature.properties.direction + ')' + '<br>' +
+                        '<em>Mean Time Between Buses:</em> ' + Math.round(feature.properties.interval * 10) / 10 + ' minutes <br>');
+            return m;
           }
         };
       })
