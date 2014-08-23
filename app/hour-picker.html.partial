@@ -1,0 +1,7 @@
+<div>hour: {{ hour }}</div>
+<div>hour12: {{ hour12 }}</div>
+<div>meridian: {{ meridian }}</div>
+<div class="input-group">
+  <input type="number" name="number" min="1" max="12" ng-class="{'has-error': number.$invalid}" ng-change="setHour()" class="form-control" size="1" ng-model="hour12">
+  <button type="button" ng-click="toggleMeridian()" class="btn btn-primary">{{ meridian }}</button>
+</div>

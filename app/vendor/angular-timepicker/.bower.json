@@ -1,0 +1,15 @@
+{
+  "name": "angular-timepicker",
+  "homepage": "https://github.com/Geta/angular-timepicker",
+  "version": "1.0.5",
+  "_release": "1.0.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.5",
+    "commit": "946607f879feb5bdf606a36fb90eb0dd11562eeb"
+  },
+  "_source": "git://github.com/Geta/angular-timepicker.git",
+  "_target": "~1.0.5",
+  "_originalSource": "angular-timepicker",
+  "_direct": true
+}
