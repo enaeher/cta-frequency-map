@@ -1,4 +1,4 @@
-frequencyMap.controller("MapController", [ '$scope', '$http', function($scope, $http) {
+frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leafletData', function($scope, $http, $location, leafletData) {
 
   var directionColors = {
     "Northbound" : "#ffcc04",
@@ -13,12 +13,31 @@ frequencyMap.controller("MapController", [ '$scope', '$http', function($scope, $
     // complement of interval length
     return 1 - (interval / 20);
   };
+
+  $http({
+    method: "GET",
+    url: "/frequency-server/routes"
+  }).success(function (response) {
+    $scope.routes = response;
+  });
   
   angular.extend($scope, {
     
-    
+    currentRoute: null,
     earliestHour: new Date(0,0,0,7),
     latestHour: new Date(0,0,0,19),
+    allDaysOfWeek: [{ id: 0, label: "S" },
+                    { id: 1, label: "M" },
+                    { id: 2, label: "T" },
+                    { id: 3, label: "W" },
+                    { id: 4, label: "T" },
+                    { id: 5, label: "F" },
+                    { id: 6, label: "S" }],
+    daysOfWeek: [1,2,3,4,5],
+
+    defaults: {
+      zoomControl: false
+    },
     
     center: {
       // Chicago, State and Lake
@@ -43,6 +62,10 @@ frequencyMap.controller("MapController", [ '$scope', '$http', function($scope, $
       }
     },
 
+    routeIDAsInt: function (route) {
+      return parseInt (route.id);
+    },
+    
     refresh: function () {
       $scope.geojson = [];
       $http({
@@ -50,22 +73,24 @@ frequencyMap.controller("MapController", [ '$scope', '$http', function($scope, $
         url: "/frequency-server/average-intervals",
         params: {
           "earliest-hour": $scope.earliestHour.getHours(),
-          "latest-hour": $scope.latestHour.getHours()
+          "latest-hour": $scope.latestHour.getHours(),
+          "route": $scope.currentRoute,
+          "dow": $scope.daysOfWeek
         }
       }).success(function (response) {
         $scope.geojson = {
           data: response,
           pointToLayer: function(feature, latlng){
             var m = L.circleMarker(latlng, {
-              radius: ratioFromInterval(feature.properties.interval) * 10,
+              radius: ratioFromInterval(feature.properties.interval) * 12,
               fillColor: directionColors[feature.properties.direction],
               color: '#000',
               weight: 0.5,
               opacity: 1,
-              fillOpacity: 0.25
+              fillOpacity: 0.75
             });
             m.bindPopup(feature.properties.route + ', ' +
-                        feature.properties.stop + '(' +
+                        feature.properties.stop + ' (' +
                         feature.properties.direction + ')' + '<br>' +
                         '<em>Mean Time Between Buses:</em> ' + Math.round(feature.properties.interval * 10) / 10 + ' minutes <br>');
             return m;
@@ -76,5 +101,13 @@ frequencyMap.controller("MapController", [ '$scope', '$http', function($scope, $
     }
   });
 
-  $scope.refresh();
+  leafletData.getMap().then(function (map) {
+    map.addControl(L.control.zoom({position: 'topright'}));
+  });
+  
+  $scope.$on("centerUrlHash", function(event, centerHash) {
+    $location.search({ c: centerHash });
+  });
+  
+//  $scope.refresh();
 }]);

@@ -1,1 +1,1 @@
-var frequencyMap = angular.module('frequencyMap', ['leaflet-directive', 'dnTimepicker']);
+var frequencyMap = angular.module('frequencyMap', ['leaflet-directive', 'dnTimepicker', 'checklist-model']);
