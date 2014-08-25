@@ -57,3 +57,11 @@ html, body {
 .angular-leaflet-map {
   flex: 1;
 }
+
+.ngrs-range-slider.disabled .ngrs-join {
+  background-color: gray;
+  background-image: -webkit-linear-gradient(#bbbbbb, #dddddd);
+  background-image: -moz-linear-gradient(#bbbbbb, #dddddd);
+  background-image: -o-linear-gradient(#bbbbbb, #dddddd);
+  background-image: linear-gradient(#bbbbbb, #dddddd);
+}

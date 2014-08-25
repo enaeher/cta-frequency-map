@@ -7,17 +7,19 @@
     <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="vendor/L.GeoSearch/src/css/l.geosearch.css">
+    <link rel="stylesheet" href="vendor/angular-rangeslider/angular.rangeSlider.css"></script>
 
     <!-- app-specific css -->
 
     <link rel="stylesheet" href="css/main.css">
     
     <!-- cdn third party scripts -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
     <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap.min.js"></script>
-
+    
     <!-- local third party scripts -->
     <script src="vendor/angular-leaflet/dist/angular-leaflet-directive.min.js"></script>
     <script src="vendor/angular-dateparser/dateparser.js"></script>
@@ -26,6 +28,7 @@
     <script src="vendor/L.GeoSearch/src/js/l.control.geosearch.js"></script>
     <script src="vendor/L.GeoSearch/src/js/l.geosearch.provider.google.js"></script>
     <script src="vendor/angular-bindonce/bindonce.min.js"></script>
+    <script src="vendor/angular-rangeslider/angular.rangeSlider.js"></script>
     
     <!-- app-specific scripts -->
     <script src="js/app.js"></script>
@@ -61,6 +64,12 @@
               <input type="checkbox" checklist-model="daysOfWeek" checklist-value="day.id"><br>{{ day.label }}
             </label>
             </span>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" ng-model="filterByAvgInterval"> Only show {{ minAvgInterval }}&ndash;{{ maxAvgInterval }} min. intervals
+            </label>
+            <div range-slider disabled="!filterByAvgInterval" min="1" max="30" model-min="minAvgInterval" model-max="maxAvgInterval" show-values="false"></div>
           </div>
           <div class="form-group">
             <button type="button" class="btn btn-primary" ng-click="refresh()">Refresh</button>

@@ -34,6 +34,9 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
                     { id: 5, label: "F" },
                     { id: 6, label: "S" }],
     daysOfWeek: [1,2,3,4,5],
+    filterByAvgInterval: true,
+    minAvgInterval: 1,
+    maxAvgInterval: 12,
 
     defaults: {
       zoomControlPosition: 'topright'
@@ -75,9 +78,12 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
           "earliest-hour": $scope.earliestHour.getHours(),
           "latest-hour": $scope.latestHour.getHours(),
           "route": $scope.currentRoute,
-          "dow": $scope.daysOfWeek
+          "dow": $scope.daysOfWeek,
+          "maximum-average-interval": $scope.filterByAvgInterval && $scope.maxAvgInterval ? $scope.maxAvgInterval : undefined,
+          "minimum-average-interval": $scope.filterByAvgInterval && $scope.minAvgInterval ? $scope.minAvgInterval : undefined
         }
       }).success(function (response) {
+        console.log (response.length);
         $scope.geojson = {
           data: response,
           pointToLayer: function(feature, latlng){
