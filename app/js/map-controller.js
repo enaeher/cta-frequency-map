@@ -1,4 +1,4 @@
-frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leafletData', function($scope, $http, $location, leafletData) {
+frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leafletData', 'leafletBoundsHelpers', function($scope, $http, $location, leafletData, leafletBoundsHelpers) {
 
   var directionColors = {
     "Northbound" : "#ffcc04",
@@ -36,7 +36,7 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
     daysOfWeek: [1,2,3,4,5],
 
     defaults: {
-      zoomControl: false
+      zoomControlPosition: 'topright'
     },
     
     center: {
@@ -51,7 +51,7 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
       colors: _.values(directionColors),
       labels: _.keys(directionColors)
     },
-    
+
     tiles: {
       url: 'http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png',
       options: {
@@ -61,7 +61,7 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
         maxZoom: 20
       }
     },
-
+    
     routeIDAsInt: function (route) {
       return parseInt (route.id);
     },
@@ -102,7 +102,12 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
   });
 
   leafletData.getMap().then(function (map) {
-    map.addControl(L.control.zoom({position: 'topright'}));
+    new L.Control.GeoSearch({
+      provider: new L.GeoSearch.Provider.Google(),
+      position: 'topleft',
+      zoomLevel: 16,
+      showMarker: false
+    }).addTo(map);
   });
   
   $scope.$on("centerUrlHash", function(event, centerHash) {

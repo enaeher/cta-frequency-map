@@ -3,91 +3,34 @@
   <head>
     <title>CTA Bus Frequency Map</title>
     
+    <!-- third party css -->
+    <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/L.GeoSearch/src/css/l.geosearch.css">
+
+    <!-- app-specific css -->
+
+    <link rel="stylesheet" href="css/main.css">
+    
     <!-- cdn third party scripts -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
     <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
 
     <!-- local third party scripts -->
     <script src="vendor/angular-leaflet/dist/angular-leaflet-directive.min.js"></script>
-    <script src="vendor/leaflet-hash/leaflet-hash.js"></script>
-    <script src="vendor/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
     <script src="vendor/angular-dateparser/dateparser.js"></script>
     <script src="vendor/angular-timepicker/angular.timepicker.js"></script>
     <script src="vendor/checklist-model/checklist-model.js"></script>
+    <script src="vendor/L.GeoSearch/src/js/l.control.geosearch.js"></script>
+    <script src="vendor/L.GeoSearch/src/js/l.geosearch.provider.google.js"></script>
+    <script src="vendor/angular-bindonce/bindonce.min.js"></script>
     
-    <!-- third party css -->
-    <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-    <!-- app-specific -->
+    <!-- app-specific scripts -->
     <script src="js/app.js"></script>
     <script src="js/map-controller.js"></script>
 
-    <style>
-      html, body {
-      height: 100%;
-      }
-      
-      .legend {
-      padding: 1em;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      background: rgba(255,255,255, 0.9);
-      border-radius: 5px;
-      }
-
-      .legend .outline {
-      float: left;
-      clear: left;
-      margin-bottom: 8px;
-      }
-      
-      .legend i {
-      color: #777;
-      width: 18px;
-      height: 18px;
-      float: left;
-      clear: left;
-      margin-right: 8px;
-      opacity: 0.7;
-      }
-
-      .legend .info-label {
-      float: left;
-      }
-
-      #query {
-      background-color: white;
-      width: 100%;
-      height: auto;
-      padding: 1em;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      border-bottom: 1px solid black;
-      }
-
-      .form-inline .form-group {
-      margin-right: 1em;
-      }
-      
-      .form-control[readonly] {
-      background-color: inherit;
-      cursor: inherit;
-      opacity: inherit;
-      }
-
-      #map {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      }
-      
-      .angular-leaflet-map {
-      flex: 1;
-      }
-
-    </style>
   </head>
   <body>
     <div id="map" ng-controller="MapController">
@@ -126,9 +69,10 @@
       <leaflet defaults="defaults"
                center="center"
                url-hash-center="yes"
-               geojson="geojson"
                tiles="tiles"
-               legend="legend"></leaflet>
+               geojson="geojson"
+               legend="legend"
+               watch-markers="no"></leaflet>
     </div>
   </body>
 </html>
