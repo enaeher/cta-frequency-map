@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="vendor/L.GeoSearch/src/css/l.geosearch.css">
-    <link rel="stylesheet" href="vendor/angular-rangeslider/angular.rangeSlider.css"></script>
+    <link rel="stylesheet" href="vendor/angular-rangeslider/angular.rangeSlider.css">
+    <link rel="stylesheet" href="vendor/leaflet.loading/src/Control.Loading.css">
 
     <!-- app-specific css -->
 
@@ -29,6 +30,8 @@
     <script src="vendor/L.GeoSearch/src/js/l.geosearch.provider.google.js"></script>
     <script src="vendor/angular-bindonce/bindonce.min.js"></script>
     <script src="vendor/angular-rangeslider/angular.rangeSlider.js"></script>
+    <script src="vendor/spinjs/spin.js"></script>
+    <script src="vendor/leaflet.loading/src/Control.Loading.js"></script>
     
     <!-- app-specific scripts -->
     <script src="js/app.js"></script>
@@ -74,6 +77,7 @@
           <div class="form-group">
             <button type="button" class="btn btn-primary" ng-click="refresh()">Refresh</button>
           </div>
+          <p>Displaying {{ leaflet.geojson.data.length || 0 }} stops</p>
       </div>
       <leaflet defaults="leaflet.defaults"
                center="leaflet.center"

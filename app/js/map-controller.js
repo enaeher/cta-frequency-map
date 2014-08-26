@@ -14,6 +14,18 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
     return 1 - (interval / 20);
   };
 
+  function startSpinner () {
+    leafletData.getMap().then(function (map) {
+      map.fireEvent('dataloading');
+    });
+  }
+
+  function stopSpinner () {
+    leafletData.getMap().then(function (map) {
+      map.fireEvent('dataload');
+    });
+  }
+
   $http({
     method: "GET",
     url: "/frequency-server/routes"
@@ -75,6 +87,7 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
     },
     
     refresh: function () {
+      startSpinner();
       $scope.geojson = [];
       $http({
         method: "GET",
@@ -107,8 +120,10 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
             return m;
           }
         };
-      })
-      ;
+        stopSpinner();
+      }).error(function () {
+        stopSpinner();
+      });
     }
   });
 
@@ -118,6 +133,11 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
       position: 'topleft',
       zoomLevel: 16,
       showMarker: false
+    }).addTo(map);
+
+    new L.Control.Loading({
+      position: 'topright',
+      spinjs: true
     }).addTo(map);
   });
   
