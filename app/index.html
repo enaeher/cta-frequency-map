@@ -43,14 +43,14 @@
             <label for="earliestHour">Between the hours of </label>
             <input id="earliestHour" size="6" class="form-control" type="text"
                    dn-timepicker step="1h"
-                   ng-model="earliestHour"/>
+                   ng-model="model.earliestHour"/>
             <label for="latestHour"> and </label>
             <input id="latestHour" size="6" class="form-control" type="text"
                    dn-timepicker step="1h"
-                   ng-model="latestHour"/>
+                   ng-model="model.latestHour"/>
           </div>
           <div class="form-group">
-            <select class="form-control" ng-model="currentRoute"
+            <select class="form-control" ng-model="model.currentRoute"
                     ng-options="route.id as (route.id + ' -  ' + route.name) for route in routes | orderBy:routeIDAsInt">
               <option value="">Select a route (optional)</option>
             </select>
@@ -61,26 +61,26 @@
             here -->
             <span ng-repeat="day in allDaysOfWeek">
             <label>
-              <input type="checkbox" checklist-model="daysOfWeek" checklist-value="day.id"><br>{{ day.label }}
+              <input type="checkbox" checklist-model="model.daysOfWeek" checklist-value="day.id"><br>{{ day.label }}
             </label>
             </span>
           </div>
           <div class="form-group">
             <label>
-              <input type="checkbox" ng-model="filterByAvgInterval"> Only show {{ minAvgInterval }}&ndash;{{ maxAvgInterval }} min. intervals
+              <input type="checkbox" ng-model="model.filterByAvgInterval"> Only show {{ model.minAvgInterval }}&ndash;{{ model.maxAvgInterval }} min. intervals
             </label>
-            <div range-slider disabled="!filterByAvgInterval" min="1" max="30" model-min="minAvgInterval" model-max="maxAvgInterval" show-values="false"></div>
+            <div range-slider disabled="!model.filterByAvgInterval" min="1" max="30" model-min="model.minAvgInterval" model-max="model.maxAvgInterval" show-values="false"></div>
           </div>
           <div class="form-group">
             <button type="button" class="btn btn-primary" ng-click="refresh()">Refresh</button>
           </div>
       </div>
-      <leaflet defaults="defaults"
-               center="center"
+      <leaflet defaults="leaflet.defaults"
+               center="leaflet.center"
                url-hash-center="yes"
-               tiles="tiles"
-               geojson="geojson"
-               legend="legend"
+               tiles="leaflet.tiles"
+               geojson="leaflet.geojson"
+               legend="leaflet.legend"
                watch-markers="no"></leaflet>
     </div>
   </body>

@@ -22,10 +22,7 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
   });
   
   angular.extend($scope, {
-    
-    currentRoute: null,
-    earliestHour: new Date(0,0,0,7),
-    latestHour: new Date(0,0,0,19),
+
     allDaysOfWeek: [{ id: 0, label: "S" },
                     { id: 1, label: "M" },
                     { id: 2, label: "T" },
@@ -33,35 +30,43 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
                     { id: 4, label: "T" },
                     { id: 5, label: "F" },
                     { id: 6, label: "S" }],
-    daysOfWeek: [1,2,3,4,5],
-    filterByAvgInterval: true,
-    minAvgInterval: 1,
-    maxAvgInterval: 12,
-
-    defaults: {
-      zoomControlPosition: 'topright'
-    },
     
-    center: {
-      // Chicago, State and Lake
-      lat: 41.885967,
-      lng: -87.627925,
-      zoom: 13
+    model: {
+      currentRoute: null,
+      earliestHour: new Date(0,0,0,7),
+      latestHour: new Date(0,0,0,19),
+      daysOfWeek: [1,2,3,4,5],
+      filterByAvgInterval: true,
+      minAvgInterval: 1,
+      maxAvgInterval: 12
     },
 
-    legend: {
-      position: 'bottomright',
-      colors: _.values(directionColors),
-      labels: _.keys(directionColors)
-    },
-
-    tiles: {
-      url: 'http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png',
-      options: {
-        attribution: 'Map tiles by <a href= "http://stamen.com">Stamen Design</a>, <a href= "http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-        subdomains: 'abcd',
-        minZoom: 0,
-        maxZoom: 20
+    leaflet: {
+      defaults: {
+        zoomControlPosition: 'topright'
+      },
+      
+      center: {
+        // Chicago, State and Lake
+        lat: 41.885967,
+        lng: -87.627925,
+        zoom: 13
+      },
+      
+      legend: {
+        position: 'bottomright',
+        colors: _.values(directionColors),
+        labels: _.keys(directionColors)
+      },
+      
+      tiles: {
+        url: 'http://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png',
+        options: {
+          attribution: 'Map tiles by <a href= "http://stamen.com">Stamen Design</a>, <a href= "http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+          subdomains: 'abcd',
+          minZoom: 0,
+          maxZoom: 20
+        }
       }
     },
     
@@ -75,15 +80,15 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
         method: "GET",
         url: "/frequency-server/average-intervals",
         params: {
-          "earliest-hour": $scope.earliestHour.getHours(),
-          "latest-hour": $scope.latestHour.getHours(),
-          "route": $scope.currentRoute,
-          "dow": $scope.daysOfWeek,
-          "maximum-average-interval": $scope.filterByAvgInterval && $scope.maxAvgInterval ? $scope.maxAvgInterval : undefined,
-          "minimum-average-interval": $scope.filterByAvgInterval && $scope.minAvgInterval ? $scope.minAvgInterval : undefined
+          "earliest-hour": $scope.model.earliestHour.getHours(),
+          "latest-hour": $scope.model.latestHour.getHours(),
+          "route": $scope.model.currentRoute,
+          "dow": $scope.model.daysOfWeek,
+          "maximum-average-interval": $scope.model.filterByAvgInterval && $scope.model.maxAvgInterval ? $scope.model.maxAvgInterval : undefined,
+          "minimum-average-interval": $scope.model.filterByAvgInterval && $scope.model.minAvgInterval ? $scope.model.minAvgInterval : undefined
         }
       }).success(function (response) {
-        $scope.geojson = {
+        $scope.leaflet.geojson = {
           data: response,
           pointToLayer: function(feature, latlng){
             var m = L.circleMarker(latlng, {
