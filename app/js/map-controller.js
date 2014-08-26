@@ -83,7 +83,6 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
           "minimum-average-interval": $scope.filterByAvgInterval && $scope.minAvgInterval ? $scope.minAvgInterval : undefined
         }
       }).success(function (response) {
-        console.log (response.length);
         $scope.geojson = {
           data: response,
           pointToLayer: function(feature, latlng){
@@ -95,10 +94,11 @@ frequencyMap.controller("MapController", [ '$scope', '$http', '$location', 'leaf
               opacity: 1,
               fillOpacity: 0.75
             });
-            m.bindPopup(feature.properties.route + ', ' +
+            m.bindPopup('<strong>' + feature.properties.route + '-' +
+                        feature.properties.routeName +'</strong>, ' +
                         feature.properties.stop + ' (' +
                         feature.properties.direction + ')' + '<br>' +
-                        '<em>Mean Time Between Buses:</em> ' + Math.round(feature.properties.interval * 10) / 10 + ' minutes <br>');
+                        '<strong>Mean Time Between Buses:</strong> ' + Math.round(feature.properties.interval * 10) / 10 + ' minutes <br>');
             return m;
           }
         };
